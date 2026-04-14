@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Zamzam University</title>
+    <title>Students - Zamzam University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --primary: #1e40af;
@@ -24,8 +23,6 @@
             --text-secondary: #64748b;
             --text-muted: #94a3b8;
             --border: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
             --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             --radius: 12px;
@@ -35,6 +32,8 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
@@ -133,12 +132,6 @@
             color: var(--primary);
         }
 
-        .nav-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 16px 0;
-        }
-
         .sidebar-footer {
             padding: 16px 12px;
             border-top: 1px solid var(--border);
@@ -157,6 +150,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         .page-title {
@@ -175,7 +170,7 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow);
         }
 
         .card-header {
@@ -184,6 +179,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .card-title {
@@ -196,111 +193,32 @@
         }
 
         .card-body {
-            padding: 24px;
+            padding: 0;
         }
 
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
+        /* Search & Filter */
+        .search-box {
             display: flex;
-            align-items: flex-start;
-            gap: 16px;
+            gap: 12px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9375rem;
+            font-family: inherit;
             transition: all 0.2s ease;
         }
 
-        .stat-card:hover {
-            box-shadow: var(--shadow);
-            transform: translateY(-2px);
-        }
-
-        .stat-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .stat-icon.primary {
-            background: rgba(30, 64, 175, 0.1);
-            color: var(--primary);
-        }
-
-        .stat-icon.success {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--success);
-        }
-
-        .stat-icon.warning {
-            background: rgba(202, 138, 4, 0.1);
-            color: var(--warning);
-        }
-
-        .stat-icon.info {
-            background: rgba(8, 145, 178, 0.1);
-            color: #0891b2;
-        }
-
-        .stat-content {
-            flex: 1;
-        }
-
-        .stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1;
-            color: var(--text-primary);
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        /* Charts Grid */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        @media (max-width: 900px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .chart-container {
-            position: relative;
-            height: 280px;
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
         }
 
         /* Table */
@@ -315,7 +233,7 @@
 
         .table th {
             text-align: left;
-            padding: 12px 16px;
+            padding: 14px 20px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -323,10 +241,11 @@
             color: var(--text-muted);
             border-bottom: 1px solid var(--border);
             background: var(--bg);
+            white-space: nowrap;
         }
 
         .table td {
-            padding: 16px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border);
             font-size: 0.9375rem;
         }
@@ -347,6 +266,7 @@
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .badge-success {
@@ -373,6 +293,7 @@
             transition: all 0.2s ease;
             border: none;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -409,17 +330,22 @@
             font-size: 0.8125rem;
         }
 
+        .btn-block {
+            width: 100%;
+        }
+
         /* Pagination */
         .pagination {
             display: flex;
             gap: 8px;
             justify-content: center;
-            margin-top: 24px;
+            padding: 20px;
+            border-top: 1px solid var(--border);
         }
 
         .pagination button {
-            width: 36px;
-            height: 36px;
+            min-width: 40px;
+            height: 40px;
             border: 1px solid var(--border);
             background: var(--surface);
             border-radius: var(--radius-sm);
@@ -431,7 +357,7 @@
             font-weight: 500;
         }
 
-        .pagination button:hover {
+        .pagination button:hover:not(:disabled) {
             border-color: var(--primary);
             color: var(--primary);
         }
@@ -442,12 +368,121 @@
             color: white;
         }
 
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Add Student Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
         /* Toast */
         .toast-container {
             position: fixed;
             top: 24px;
             right: 24px;
-            z-index: 1000;
+            z-index: 1001;
         }
 
         .toast {
@@ -473,6 +508,23 @@
         }
 
         .toast.success i { color: var(--success); }
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        .toast.error i { color: var(--danger); }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
 
         /* Mobile Toggle */
         .mobile-toggle {
@@ -489,6 +541,73 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 992px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.primary {
+            background: rgba(30, 64, 175, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(202, 138, 4, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-icon.info {
+            background: rgba(8, 145, 178, 0.1);
+            color: #0891b2;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
 
         @media (max-width: 768px) {
@@ -508,6 +627,10 @@
 
             .mobile-toggle {
                 display: flex;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -530,7 +653,7 @@
 
             <nav class="sidebar-nav">
                 <div class="nav-item">
-                    <a href="admin.php" class="nav-link active">
+                    <a href="admin.php" class="nav-link">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
@@ -542,28 +665,15 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="students-admin.php" class="nav-link">
+                    <a href="students-admin.php" class="nav-link active">
                         <i class="bi bi-person-badge"></i>
                         Students
                     </a>
                 </div>
-                <div class="nav-divider"></div>
                 <div class="nav-item">
                     <a href="dashboard.php" class="nav-link">
-                        <i class="bi bi-grid-1x2"></i>
-                        Overview
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="vote-counter.php" class="nav-link">
-                        <i class="bi bi-plus-circle"></i>
-                        Count Votes
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="results-display.php" class="nav-link">
                         <i class="bi bi-display"></i>
-                        Display Results
+                        Voting Dashboard
                     </a>
                 </div>
             </nav>
@@ -581,23 +691,27 @@
         <main class="main-content">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Dashboard</h1>
-                    <p class="page-subtitle">Overview of voting statistics</p>
+                    <h1 class="page-title">Students</h1>
+                    <p class="page-subtitle">Manage student records and voting status</p>
                 </div>
-                <a href="vote-counter.php" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-1"></i>Count Votes
-                </a>
-                <a href="results-display.php" class="btn btn-success">
-                    <i class="bi bi-display me-1"></i>Display
-                </a>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success" onclick="openImportModal()">
+                        <i class="bi bi-upload"></i>
+                        Import CSV
+                    </button>
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="bi bi-plus-lg"></i>
+                        Add Student
+                    </button>
+                </div>
             </div>
 
-            <div class="stats-grid">
+            <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-icon primary">
                         <i class="bi bi-people-fill"></i>
                     </div>
-                    <div class="stat-content">
+                    <div>
                         <div id="statTotal" class="stat-value">0</div>
                         <div class="stat-label">Total Students</div>
                     </div>
@@ -606,7 +720,7 @@
                     <div class="stat-icon success">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
-                    <div class="stat-content">
+                    <div>
                         <div id="statVoted" class="stat-value">0</div>
                         <div class="stat-label">Voted</div>
                     </div>
@@ -615,7 +729,7 @@
                     <div class="stat-icon warning">
                         <i class="bi bi-hourglass-split"></i>
                     </div>
-                    <div class="stat-content">
+                    <div>
                         <div id="statNotVoted" class="stat-value">0</div>
                         <div class="stat-label">Not Voted</div>
                     </div>
@@ -624,52 +738,19 @@
                     <div class="stat-icon info">
                         <i class="bi bi-graph-up-arrow"></i>
                     </div>
-                    <div class="stat-content">
+                    <div>
                         <div id="statPercentage" class="stat-value">0%</div>
                         <div class="stat-label">Turnout</div>
                     </div>
                 </div>
             </div>
 
-            <div class="charts-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <i class="bi bi-pie-chart-fill text-primary"></i>
-                            Voting Progress
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="votingChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">
-                            <i class="bi bi-bar-chart-fill text-primary"></i>
-                            Department Breakdown
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="deptChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="bi bi-list-ul text-primary"></i>
-                        Recent Activity
-                    </h2>
-                    <button class="btn btn-success btn-sm" onclick="exportCSV()">
-                        <i class="bi bi-download"></i>
-                        Export CSV
+                <div class="search-box">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by Student ID, Name, or Department...">
+                    <button class="btn btn-primary" onclick="loadStudents(1)">
+                        <i class="bi bi-search"></i>
+                        Search
                     </button>
                 </div>
                 <div class="card-body">
@@ -687,7 +768,9 @@
                             </thead>
                             <tbody id="studentsTable">
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">Loading...</td>
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="spinner-border text-primary" role="status"></div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -698,14 +781,74 @@
         </main>
     </div>
 
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="bi bi-person-plus me-2"></i>Add New Student</h3>
+                <button class="modal-close" onclick="closeAddModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addStudentForm">
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" class="form-control" name="student_id" placeholder="e.g. STU001" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Department</label>
+                        <input type="text" class="form-control" name="department" placeholder="Enter department" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background: var(--bg);" onclick="closeAddModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitAddStudent()">
+                    <i class="bi bi-check-lg"></i>
+                    Add Student
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal-overlay" id="importModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="bi bi-upload me-2"></i>Import Students</h3>
+                <button class="modal-close" onclick="closeImportModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Upload a CSV file with columns: student_id, name, department</p>
+                <input type="file" class="form-control" id="importFile" accept=".csv,.txt">
+                <div class="mt-3 p-3" style="background: var(--bg); border-radius: var(--radius-sm);">
+                    <p class="small mb-1"><strong>CSV Format:</strong></p>
+                    <code class="small">student_id,name,department</code><br>
+                    <code class="small">STU001,Ahmed Mohamed,Computer Science</code>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background: var(--bg);" onclick="closeImportModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="importStudents()">
+                    <i class="bi bi-upload"></i>
+                    Import
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-container" id="toastContainer"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentPage = 1;
-        let votingChart, deptChart;
-
-        const chartColors = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#7c3aed', '#a78bfa', '#0891b2', '#22d3ee', '#6b7280'];
+        let searchQuery = '';
 
         async function apiCall(url, options = {}) {
             try {
@@ -735,76 +878,13 @@
             }, 3000);
         }
 
-        function initCharts() {
-            Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
-            
-            votingChart = new Chart(document.getElementById('votingChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Voted', 'Not Voted'],
-                    datasets: [{
-                        data: [0, 0],
-                        backgroundColor: ['#059669', '#f59e0b'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
-                    }
-                }
-            });
-
-            deptChart = new Chart(document.getElementById('deptChart'), {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Total',
-                        data: [],
-                        backgroundColor: '#1e40af',
-                        borderRadius: 4
-                    }, {
-                        label: 'Voted',
-                        data: [],
-                        backgroundColor: '#059669',
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
-                    },
-                    scales: {
-                        x: { grid: { display: false } },
-                        y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
-                    }
-                }
-            });
-        }
-
         async function loadStats() {
             try {
                 const data = await apiCall('api.php?action=stats');
-                
                 document.getElementById('statTotal').textContent = data.stats.total;
                 document.getElementById('statVoted').textContent = data.stats.voted;
                 document.getElementById('statNotVoted').textContent = data.stats.not_voted;
                 document.getElementById('statPercentage').textContent = data.stats.percentage + '%';
-                
-                votingChart.data.datasets[0].data = [data.stats.voted, data.stats.not_voted];
-                votingChart.update();
-                
-                if (data.departments) {
-                    deptChart.data.labels = data.departments.map(d => d.department);
-                    deptChart.data.datasets[0].data = data.departments.map(d => d.count);
-                    deptChart.data.datasets[1].data = data.departments.map(d => d.voted);
-                    deptChart.update();
-                }
             } catch (error) {
                 console.error('Failed to load stats');
             }
@@ -813,10 +893,13 @@
         async function loadStudents(page = 1) {
             currentPage = page;
             const tbody = document.getElementById('studentsTable');
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>';
+            const search = document.getElementById('searchInput').value.trim();
+            searchQuery = search;
+            
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></td></tr>';
             
             try {
-                const data = await apiCall(`api.php?action=all_students&page=${page}`);
+                const data = await apiCall(`api.php?action=all_students&page=${page}&search=${encodeURIComponent(search)}`);
                 renderStudents(data.students);
                 renderPagination(data.pagination);
             } catch (error) {
@@ -828,7 +911,16 @@
             const tbody = document.getElementById('studentsTable');
             
             if (students.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No students found</td></tr>';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="bi bi-people"></i>
+                                <p>No students found</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
             
@@ -902,15 +994,90 @@
             }
         }
 
-        function exportCSV() {
-            window.location.href = 'api.php?action=export_csv';
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('show');
         }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('show');
+            document.getElementById('addStudentForm').reset();
+        }
+
+        async function submitAddStudent() {
+            const form = document.getElementById('addStudentForm');
+            const formData = new FormData(form);
+            
+            try {
+                await apiCall('api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'add_student',
+                        student_id: formData.get('student_id'),
+                        name: formData.get('name'),
+                        department: formData.get('department')
+                    })
+                });
+                
+                showToast('Student added successfully');
+                closeAddModal();
+                loadStudents(1);
+                loadStats();
+            } catch (error) {
+                console.error('Failed to add student');
+            }
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('show');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('show');
+            document.getElementById('importFile').value = '';
+        }
+
+        async function importStudents() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast('Please select a file', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'import_students');
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                showToast(data.message);
+                closeImportModal();
+                loadStudents(1);
+                loadStats();
+            } catch (error) {
+                console.error('Import failed');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loadStudents(1);
+            }
+        });
 
         document.getElementById('mobileToggle').addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('open');
         });
 
-        initCharts();
         loadStats();
         loadStudents(1);
     </script>

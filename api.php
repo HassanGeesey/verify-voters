@@ -97,6 +97,12 @@ switch($method) {
                         ]
                     ]);
                     break;
+                    
+                case 'all_candidates':
+                    $stmt = $conn->query("SELECT id, name, type, vote_count, created_at FROM candidates ORDER BY FIELD(type, 'Chairperson', 'Vice-Chairperson'), id DESC");
+                    $candidates = $stmt->fetchAll();
+                    jsonResponse(['success' => true, 'candidates' => $candidates]);
+                    break;
             }
         }
         break;
@@ -104,9 +110,9 @@ switch($method) {
     case 'POST':
         $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
         
-        if (strpos($contentType, 'multipart/form-data') !== false) {
+        if (stripos($contentType, 'multipart/form-data') !== false) {
             $data = $_POST;
-            $file = $_FILES['file'] ?? null;
+            $file = $_FILES['image'] ?? null;
         } else {
             $data = json_decode(file_get_contents('php://input'), true);
             $file = null;
@@ -279,6 +285,71 @@ switch($method) {
                     'imported' => $imported,
                     'skipped' => $skipped
                 ]);
+                
+            case 'add_candidate':
+                if (!isset($data['name']) || empty(trim($data['name']))) {
+                    jsonResponse(['error' => 'Candidate name is required'], 400);
+                }
+                
+                $name = sanitize($data['name']);
+                $type = isset($data['type']) && in_array($data['type'], ['Chairperson', 'Vice-Chairperson']) 
+                    ? $data['type'] 
+                    : 'Chairperson';
+                
+                $insertStmt = $conn->prepare("INSERT INTO candidates (name, type) VALUES (?, ?)");
+                if ($insertStmt->execute([$name, $type])) {
+                    jsonResponse([
+                        'success' => true, 
+                        'message' => 'Candidate added successfully', 
+                        'id' => $conn->lastInsertId()
+                    ]);
+                } else {
+                    jsonResponse(['error' => 'Failed to add candidate'], 500);
+                }
+                break;
+                
+            case 'vote_candidate':
+                if (!isset($data['id']) || empty($data['id'])) {
+                    jsonResponse(['error' => 'Candidate ID is required'], 400);
+                }
+                
+                $candidateId = (int)$data['id'];
+                
+                $stmt = $conn->prepare("SELECT id FROM candidates WHERE id = ?");
+                $stmt->execute([$candidateId]);
+                if (!$stmt->fetch()) {
+                    jsonResponse(['error' => 'Candidate not found'], 404);
+                }
+                
+                $updateStmt = $conn->prepare("UPDATE candidates SET vote_count = vote_count + 1 WHERE id = ?");
+                if ($updateStmt->execute([$candidateId])) {
+                    $stmt = $conn->prepare("SELECT id, name, type, vote_count FROM candidates WHERE id = ?");
+                    $stmt->execute([$candidateId]);
+                    $candidate = $stmt->fetch();
+                    jsonResponse([
+                        'success' => true, 
+                        'message' => 'Vote recorded',
+                        'candidate' => $candidate
+                    ]);
+                } else {
+                    jsonResponse(['error' => 'Failed to record vote'], 500);
+                }
+                break;
+                
+            case 'delete_candidate':
+                if (!isset($data['id']) || empty($data['id'])) {
+                    jsonResponse(['error' => 'Candidate ID is required'], 400);
+                }
+                
+                $candidateId = (int)$data['id'];
+                
+                $stmt = $conn->prepare("DELETE FROM candidates WHERE id = ?");
+                if ($stmt->execute([$candidateId])) {
+                    jsonResponse(['success' => true, 'message' => 'Candidate deleted']);
+                } else {
+                    jsonResponse(['error' => 'Failed to delete candidate'], 500);
+                }
+                break;
         }
         break;
         
