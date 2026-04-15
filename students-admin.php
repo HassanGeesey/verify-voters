@@ -378,25 +378,25 @@
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: none;
             z-index: 1000;
             opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
+            transition: opacity 0.2s ease;
         }
 
         .modal-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 1;
-            visibility: visible;
         }
 
         .modal {
             display: block;
+            position: relative;
             background: var(--surface);
             border-radius: var(--radius);
-            width: 100%;
+            width: 90%;
             max-width: 480px;
             max-height: 90vh;
             overflow-y: auto;
