@@ -1025,24 +1025,41 @@
             const form = document.getElementById('addStudentForm');
             const formData = new FormData(form);
             
+            const studentId = formData.get('student_id');
+            const name = formData.get('name');
+            const department = formData.get('department');
+            
+            if (!studentId || !name || !department) {
+                showToast('All fields are required', 'error');
+                return;
+            }
+            
             try {
-                await apiCall('api.php', {
+                const response = await fetch('api.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         action: 'add_student',
-                        student_id: formData.get('student_id'),
-                        name: formData.get('name'),
-                        department: formData.get('department')
+                        student_id: studentId,
+                        name: name,
+                        department: department
                     })
                 });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    showToast(data.error || 'Failed to add student', 'error');
+                    return;
+                }
                 
                 showToast('Student added successfully');
                 closeAddModal();
                 loadStudents(1);
                 loadStats();
             } catch (error) {
-                console.error('Failed to add student');
+                showToast('Failed to add student', 'error');
+                console.error(error);
             }
         }
 
@@ -1084,16 +1101,21 @@
                     method: 'POST',
                     body: formData
                 });
+                
                 const data = await response.json();
                 
-                if (!response.ok) throw new Error(data.error);
+                if (!response.ok) {
+                    showToast(data.error || 'Import failed', 'error');
+                    return;
+                }
                 
-                showToast(data.message);
+                showToast(data.message || 'Import completed');
                 closeImportModal();
                 loadStudents(1);
                 loadStats();
             } catch (error) {
-                console.error('Import failed');
+                showToast('Import failed', 'error');
+                console.error(error);
             }
         }
 
