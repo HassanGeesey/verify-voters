@@ -112,7 +112,7 @@ switch($method) {
         
         if (stripos($contentType, 'multipart/form-data') !== false) {
             $data = $_POST;
-            $file = $_FILES['image'] ?? null;
+            $file = $_FILES['file'] ?? $_FILES['image'] ?? null;
         } else {
             $data = json_decode(file_get_contents('php://input'), true);
             $file = null;

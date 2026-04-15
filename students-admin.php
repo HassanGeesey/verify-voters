@@ -671,6 +671,24 @@
                     </a>
                 </div>
                 <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="openAddModal(); return false;">
+                        <i class="bi bi-person-plus"></i>
+                        Add Student
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="openImportModal(); return false;">
+                        <i class="bi bi-file-earmark-arrow-up"></i>
+                        Import CSV
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="downloadSampleCSV(); return false;">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        CSV Format
+                    </a>
+                </div>
+                <div class="nav-item">
                     <a href="dashboard.php" class="nav-link">
                         <i class="bi bi-display"></i>
                         Voting Dashboard
@@ -1030,6 +1048,17 @@
 
         function openImportModal() {
             document.getElementById('importModal').classList.add('show');
+        }
+
+        function downloadSampleCSV() {
+            const csv = 'student_id,name,department\nSTU001,Ahmed Mohamed,Computer Science\nSTU002,Fatima Ali,Engineering\nSTU003,Omar Hassan,Business\nSTU004,Aisha Ibrahim,Medicine';
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'students_template.csv';
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         function closeImportModal() {
