@@ -393,6 +393,7 @@
         }
 
         .modal {
+            display: block;
             background: var(--surface);
             border-radius: var(--radius);
             width: 100%;
